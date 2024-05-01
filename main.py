@@ -1,7 +1,9 @@
 # Example file showing a basic pygame "game loop"
+from random import random
 import pygame
 
 from cell import Cell
+from food import Food
 
 # pygame setup
 pygame.init()
@@ -10,9 +12,13 @@ clock = pygame.time.Clock()
 start_ticks = pygame.time.get_ticks()
 running = True
 
+cells = []
+foods = []
 
-cell = Cell(screen,screen.get_width()/2,screen.get_height()/2,10)
-
+for _ in range(10):
+    cells.append(Cell(screen,screen.get_width()/2,screen.get_height()/2,10))
+for _ in range(100):
+    foods.append(Food(screen,screen.get_width()*random(),screen.get_height()*random()))
 
 while running:
     secondsFromStart = (pygame.time.get_ticks()-start_ticks)/1000
@@ -26,9 +32,14 @@ while running:
     # fill the screen with a color to wipe away anything from last frame
     screen.fill("cyan")
 
-    # RENDER YOUR GAME HERE
-    cell.update(screen,elapsedTime)
-    cell.render(screen)
+    #update
+    for cell in cells:
+        cell.update(screen,elapsedTime)
+    #render
+    for food in foods:
+        food.render(screen)
+    for cell in cells:
+        cell.render(screen)
 
     # flip() the display to put your work on screen
     pygame.display.flip()

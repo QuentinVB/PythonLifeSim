@@ -10,6 +10,7 @@ class Cell:
         self.radius = radius
         self.lifeDuration = 0
         self.speed=0.1
+        self.updateFrequency = math.floor(1000*random())+1
         self.updateDirection(ctx)
         pass
 
@@ -18,12 +19,12 @@ class Cell:
             distance = (ctx.get_width()/2-self.position[0],ctx.get_height()/2-self.position[1])
             norm = math.sqrt(distance[0] ** 2 + distance[1] ** 2)
             self.direction = (distance[0] / norm, distance[1] / norm)
-            print(f'redirect direction to {self.direction[0]}:{self.direction[1]}')
+            #print(f'redirect direction to {self.direction[0]}:{self.direction[1]}')
             return
-        if self.lifeDuration%100 == 0 :
+        if self.lifeDuration%self.updateFrequency == 0 :
             x = (random()*2)-1
             y = (random()*2)-1
-            print(f'change direction to {x}:{y}')
+            #print(f'change direction to {x}:{y}')
             self.direction = (x,y)
             return
         pass
