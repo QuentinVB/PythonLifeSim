@@ -4,13 +4,15 @@ import pygame
 
 
 class Cell:
+    BASE_ENERGY = 100
 
     def __init__(self,ctx,x,y,radius) -> None:
+        self.ctx = ctx
         self.position = (x,y)
         self.radius = radius
         self.lifeDuration = 0
         self.speed=0.1
-        self.energy=100
+        self.energy=Cell.BASE_ENERGY
         self.isAlive=True
         self.updateFrequency = math.floor(1000*random())+1
         self.updateDirection(ctx)
@@ -32,7 +34,7 @@ class Cell:
         pass
 
     def eat(self,food):
-        print(f'Eaten {food.quantity}, energy now at {self.energy}')
+        #print(f'Eaten {food.quantity}, energy now at {self.energy}')
         self.energy+=food.quantity
         food.eaten()
         #print("emit event")
@@ -42,6 +44,11 @@ class Cell:
         self.isAlive=False
         pygame.event.post(pygame.event.Event(pygame.USEREVENT,{"name":"cell","status":"dead","cell":self}))
         pass
+    def reproduce(self):
+        print("give life")
+        newCell=Cell(self.ctx ,self.position[0],self.position[1],self.radius)
+        self.energy-=Cell.BASE_ENERGY
+        pygame.event.post(pygame.event.Event(pygame.USEREVENT,{"name":"cell","status":"alive","cell":newCell}))
 
     def update(self,ctx,elapsedTime,foods):
         self.lifeDuration+=elapsedTime
@@ -49,6 +56,9 @@ class Cell:
 
         if self.energy<=0 :
             self.kill()
+            return
+        if self.energy> Cell.BASE_ENERGY *2 :
+            self.reproduce()
             return
         
         for food in foods:

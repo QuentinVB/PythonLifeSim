@@ -17,7 +17,7 @@ foods = []
 
 for _ in range(10):
     cells.append(Cell(screen,screen.get_width()/2,screen.get_height()/2,10))
-for _ in range(100):
+for _ in range(200):
     foods.append(Food(screen,screen.get_width()*random(),screen.get_height()*random()))
 
 while running:
@@ -29,11 +29,15 @@ while running:
         if event.type == pygame.USEREVENT and event.dict["name"]=="food":
             foods.remove(event.dict["food"])
         if event.type == pygame.USEREVENT and event.dict["name"]=="cell":
-            cell = event.dict["cell"]
-            cells.remove(cell)
-            newFood = Food(screen,cell.position[0],cell.position[1])
-            newFood.quantity = cell.energy + cell.radius
-            foods.append(newFood)
+            if event.dict["status"]=="dead":
+                cell = event.dict["cell"]
+                cells.remove(cell)
+                newFood = Food(screen,cell.position[0],cell.position[1])
+                newFood.quantity = cell.energy + cell.radius
+                foods.append(newFood)
+            if event.dict["status"]=="alive":
+                cell = event.dict["cell"]
+                cells.append(cell)
         if event.type == pygame.QUIT:
             running = False
 
