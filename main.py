@@ -10,12 +10,12 @@ clock = pygame.time.Clock()
 start_ticks = pygame.time.get_ticks()
 running = True
 
-cell = Cell(10,10,10)
+cell = Cell(screen.get_width()/2,screen.get_height()/2,10)
 
 
 while running:
-    seconds = (pygame.time.get_ticks()-start_ticks)/1000
-
+    secondsFromStart = (pygame.time.get_ticks()-start_ticks)/1000
+    elapsedTime = clock.get_time()
     # poll for events
     # pygame.QUIT event means the user clicked X to close your window
     for event in pygame.event.get():
@@ -26,8 +26,9 @@ while running:
     screen.fill("cyan")
 
     # RENDER YOUR GAME HERE
-    cell.render(screen,seconds)
-    
+    cell.update(elapsedTime)
+    cell.render(screen)
+
     # flip() the display to put your work on screen
     pygame.display.flip()
 
