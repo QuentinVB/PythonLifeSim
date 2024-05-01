@@ -5,8 +5,8 @@ import pygame
 class Food:
     def __init__(self,ctx,x,y) -> None:
         self.position = (x,y)
-        self.radius = 5
         quantityRatio = (random()*0.5+0.5)
+        self.radius = 8*quantityRatio
         self.quantity = math.floor(quantityRatio*100)
         self.color = pygame.Color(0, math.floor(quantityRatio*255), 0)
         self.isAlive= True
@@ -16,7 +16,7 @@ class Food:
         self.isAlive = False
         pygame.event.post(pygame.event.Event(pygame.USEREVENT,{"name":"food","status":"eaten","food":self}))
         pass
-    
+
     def update(self,ctx,elapsedTime):
         pass
 

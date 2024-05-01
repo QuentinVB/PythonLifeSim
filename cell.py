@@ -33,7 +33,7 @@ class Cell:
     def updateDirection(self,ctx):
         if self.position[0] < 0 or self.position[0]>ctx.get_width() or  self.position[1] < 0 or self.position[1]>ctx.get_height():
             distance = (ctx.get_width()/2-self.position[0],ctx.get_height()/2-self.position[1])
-            norm = math.sqrt(distance[0] ** 2 + distance[1] ** 2)
+            norm = math.sqrt(distance[0] ** 2 + distance[1] ** 2)*2
             self.direction = (distance[0] / norm, distance[1] / norm)
             #print(f'redirect direction to {self.direction[0]}:{self.direction[1]}')
             return
@@ -99,5 +99,6 @@ class Cell:
         pass
     
     def render(self,ctx):
-        pygame.draw.circle(ctx,self.color,(self.position[0],self.position[1]),self.radius,3)
+        pygame.draw.circle(ctx,self.color,(self.position[0],self.position[1]),self.radius)
+        pygame.draw.circle(ctx,self.color.lerp(0xffffff,0.5),(self.position[0],self.position[1]),self.radius,3)
         pass
