@@ -26,6 +26,14 @@ while running:
     # poll for events
     # pygame.QUIT event means the user clicked X to close your window
     for event in pygame.event.get():
+        if event.type == pygame.USEREVENT and event.dict["name"]=="food":
+            foods.remove(event.dict["food"])
+        if event.type == pygame.USEREVENT and event.dict["name"]=="cell":
+            cell = event.dict["cell"]
+            cells.remove(cell)
+            newFood = Food(screen,cell.position[0],cell.position[1])
+            newFood.quantity = cell.energy + cell.radius
+            foods.append(newFood)
         if event.type == pygame.QUIT:
             running = False
 
@@ -34,7 +42,7 @@ while running:
 
     #update
     for cell in cells:
-        cell.update(screen,elapsedTime)
+        cell.update(screen,elapsedTime,foods)
     #render
     for food in foods:
         food.render(screen)

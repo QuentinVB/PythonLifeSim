@@ -10,6 +10,8 @@ class Cell:
         self.radius = radius
         self.lifeDuration = 0
         self.speed=0.1
+        self.energy=100
+        self.isAlive=True
         self.updateFrequency = math.floor(1000*random())+1
         self.updateDirection(ctx)
         pass
@@ -29,8 +31,34 @@ class Cell:
             return
         pass
 
-    def update(self,ctx,elapsedTime):
+    def eat(self,food):
+        print(f'Eaten {food.quantity}, energy now at {self.energy}')
+        self.energy+=food.quantity
+        food.eaten()
+        #print("emit event")
+    
+    def kill(self):
+        print("i'm ded")
+        self.isAlive=False
+        pygame.event.post(pygame.event.Event(pygame.USEREVENT,{"name":"cell","status":"dead","cell":self}))
+        pass
+
+    def update(self,ctx,elapsedTime,foods):
         self.lifeDuration+=elapsedTime
+        self.energy -=self.speed*elapsedTime*0.1
+
+        if self.energy<=0 :
+            self.kill()
+            return
+        
+        for food in foods:
+            if food.isAlive:
+                distance = (food.position[0]-self.position[0],food.position[1]-self.position[1])
+                norm = math.sqrt(distance[0] ** 2 + distance[1] ** 2)
+
+                if norm < self.radius+food.radius:
+                    self.eat(food)
+
         self.updateDirection(ctx)
         self.position = (self.position[0]+self.direction[0]*elapsedTime*self.speed, self.position[1]+self.direction[1]*elapsedTime*self.speed)
         pass
