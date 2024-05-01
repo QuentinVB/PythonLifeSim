@@ -11,12 +11,13 @@ screen = pygame.display.set_mode((1280, 720))
 clock = pygame.time.Clock()
 start_ticks = pygame.time.get_ticks()
 running = True
+myfont = pygame.font.SysFont("monospace", 15)
 
 cells = []
 foods = []
 
 for _ in range(10):
-    cells.append(Cell(screen,screen.get_width()/2,screen.get_height()/2,10))
+    cells.append(Cell(screen,screen.get_width()/2,screen.get_height()/2))
 for _ in range(200):
     foods.append(Food(screen,screen.get_width()*random(),screen.get_height()*random()))
 
@@ -52,7 +53,8 @@ while running:
         food.render(screen)
     for cell in cells:
         cell.render(screen)
-
+    label = myfont.render(f'Cells: {len(cells)}', 1, (0,0,0))
+    screen.blit(label, (0, 0))
     # flip() the display to put your work on screen
     pygame.display.flip()
 
