@@ -10,7 +10,8 @@ clock = pygame.time.Clock()
 start_ticks = pygame.time.get_ticks()
 running = True
 
-cell = Cell(screen.get_width()/2,screen.get_height()/2,10)
+
+cell = Cell(screen,screen.get_width()/2,screen.get_height()/2,10)
 
 
 while running:
@@ -26,7 +27,7 @@ while running:
     screen.fill("cyan")
 
     # RENDER YOUR GAME HERE
-    cell.update(elapsedTime)
+    cell.update(screen,elapsedTime)
     cell.render(screen)
 
     # flip() the display to put your work on screen
